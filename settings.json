@@ -6,6 +6,7 @@
   "dataDir": "Data",
   "modulesDir": "Modules",
 
+  "savedDataFileName": "currentGame.json",
   "refreshStatusInterval": 5,
 
   "onlineActivity": {
