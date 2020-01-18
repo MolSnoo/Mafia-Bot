@@ -1,6 +1,6 @@
 ﻿{
   "commandPrefix": ".",
-  "debug": false,
+  "debug": true,
 
   "commandsDir": "Commands",
   "dataDir": "Data",
@@ -19,16 +19,15 @@
     "string": "Mafia"
   },
 
-  "testerRole": "585226322859655175",
-  "eligibleRole": "581612389993152532",
-  "playerRole": "581612815194783795",
-  "headmasterRole": "581613155269214218",
-  "moderatorRole": "581613661731422237",
-  "deadRole": "581612036514119680",
-  "spectatorRole": "581611800794103809",
+  "testerRole": "668191989405057025",
+  "eligibleRole": "636321482326147082",
+  "playerRole": "668194175518244871",
+  "moderatorRole": "668193752145330200",
+  "deadRole": "668194606201962527",
+  "spectatorRole": "668195203768647715",
 
-  "gameCategory": "",
-  "testingChannel": "",
-  "generalChannel": "",
-  "commandChannel": ""
+  "gameCategory": "668184016557703188",
+  "testingChannel": "668195715800891411",
+  "generalChannel": "636315613589143565",
+  "commandChannel": "668198773322678272"
 }
