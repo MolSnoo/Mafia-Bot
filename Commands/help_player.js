@@ -6,7 +6,7 @@ module.exports.config = {
     description: "Lists all commands available to you.",
     details: "Lists all commands available to the user. If a command is specified, displays the help menu for that command.",
     usage: `${settings.commandPrefix}help\n` +
-        `${settings.commandPrefix}help move`,
+        `${settings.commandPrefix}help help`,
     usableBy: "Player",
     aliases: ["help"]
 };
