@@ -6,6 +6,8 @@
   "dataDir": "Data",
   "modulesDir": "Modules",
 
+  "refreshStatusInterval": 5,
+
   "onlineActivity": {
     "type": "WATCHING",
     "string": "you"

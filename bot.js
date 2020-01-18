@@ -36,18 +36,18 @@ function loadCommands() {
 }
 
 function updateStatus() {
-    var numPlayersOnline = game.players.reduce(function (total, player) {
-        return total + (player.online ? 1 : 0);
+    var numPlayersAlive = game.players.reduce(function (total, player) {
+        return total + (player.alive ? 1 : 0);
     }, 0);
-    var onlineString = " - " + numPlayersOnline + " player" + (numPlayersOnline !== 1 ? "s" : "") + " alive";
+    var aliveString = " - " + numPlayersAlive + " player" + (numPlayersAlive !== 1 ? "s" : "") + " alive";
 
     if (settings.debug) {
-        bot.user.setActivity(settings.debugModeActivity.string, { type: settings.debugModeActivity.type });
+        bot.user.setActivity(settings.debugModeActivity.string + aliveString, { type: settings.debugModeActivity.type });
         bot.user.setStatus("dnd");
     }
     else {
         if (game.inProgress && !game.canJoin)
-            bot.user.setActivity(settings.gameInProgressActivity.string + onlineString, { type: settings.gameInProgressActivity.type, url: settings.gameInProgressActivity.url });
+            bot.user.setActivity(settings.gameInProgressActivity.string + aliveString, { type: settings.gameInProgressActivity.type, url: settings.gameInProgressActivity.url });
         else
             bot.user.setActivity(settings.onlineActivity.string, { type: settings.onlineActivity.type });
         bot.user.setStatus("online");
@@ -64,7 +64,7 @@ bot.on('ready', async () => {
     // Run living players check periodically
     setInterval(() => {
         updateStatus();
-    }, settings.onlinePlayersStatusInterval * 1000);
+    }, settings.refreshStatusInterval * 60000);
 });
 
 bot.on('message', async message => {
