@@ -1,0 +1,13 @@
+{
+  "name": "mafia-bot",
+  "version": "0.0.0",
+  "description": "Mafia-Bot",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  },
+  "dependencies": {
+    "app-root-path": "^3.0.0",
+    "discord.js": "^11.5.1"
+  }
+}

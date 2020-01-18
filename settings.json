@@ -1,0 +1,34 @@
+﻿{
+  "commandPrefix": ".",
+  "debug": false,
+
+  "commandsDir": "Commands",
+  "dataDir": "Data",
+  "modulesDir": "Modules",
+
+  "onlineActivity": {
+    "type": "WATCHING",
+    "string": "you"
+  },
+  "debugModeActivity": {
+    "type": "PLAYING",
+    "string": "Debugger.exe"
+  },
+  "gameInProgressActivity": {
+    "type": "PLAYING",
+    "string": "Mafia"
+  },
+
+  "testerRole": "585226322859655175",
+  "eligibleRole": "581612389993152532",
+  "playerRole": "581612815194783795",
+  "headmasterRole": "581613155269214218",
+  "moderatorRole": "581613661731422237",
+  "deadRole": "581612036514119680",
+  "spectatorRole": "581611800794103809",
+
+  "gameCategory": "",
+  "testingChannel": "",
+  "generalChannel": "",
+  "commandChannel": ""
+}
