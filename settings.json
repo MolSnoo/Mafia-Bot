@@ -7,7 +7,7 @@
   "modulesDir": "Modules",
 
   "savedDataFileName": "currentGame.json",
-  "refreshStatusInterval": 5,
+  "refreshStatusInterval": 1,
 
   "onlineActivity": {
     "type": "WATCHING",
@@ -32,5 +32,8 @@
   "gameCategory": "668184016557703188",
   "testingChannel": "668195715800891411",
   "generalChannel": "636315613589143565",
-  "commandChannel": "668198773322678272"
+  "commandChannel": "668198773322678272",
+  "mafiaChannel1": "668201100662407208",
+  "mafiaChannel2": "668201124548968460",
+  "mafiaChannel3": "668201149811392522"
 }

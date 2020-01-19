@@ -12,7 +12,7 @@ module.exports.save = function (game) {
         players: []
     };
     for (let i = 0; i < game.players.length; i++)
-        data.players.push(new Player(game.players[i].id, null, game.players[i].name, game.players[i].alive));
+        data.players.push(new Player(game.players[i].id, null, game.players[i].name, game.players[i].alive, game.players[i].team));
 
     const gameJson = JSON.stringify(data);
     return new Promise((resolve) => {
