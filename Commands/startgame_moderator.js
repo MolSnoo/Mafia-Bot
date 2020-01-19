@@ -1,5 +1,5 @@
 ﻿const settings = include('settings.json');
-const saveLoader = include(`${settings.modulesDir}/saveLoader.js`)
+const saveLoader = include(`${settings.modulesDir}/saveLoader.js`);
 
 module.exports.config = {
     name: "startgame_moderator",
