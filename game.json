@@ -6,5 +6,6 @@
   "halfTimer": null,
   "endTimer": null,
   "players": [],
-  "spectators": []
+  "spectators": [],
+  "poll": null
 }
