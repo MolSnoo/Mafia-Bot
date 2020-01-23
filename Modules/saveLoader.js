@@ -3,6 +3,8 @@ const fs = require('fs');
 
 const Player = include(`${settings.dataDir}/Player.js`);
 const Spectator = include(`${settings.dataDir}/Spectator.js`);
+const PollEntry = include(`${settings.dataDir}/PollEntry.js`);
+const Poll = include(`${settings.dataDir}/Poll.js`);
 
 module.exports.save = function (game) {
     var data = {
@@ -11,12 +13,33 @@ module.exports.save = function (game) {
         halfTimer: game.halfTimer,
         endTimer: game.endTimer,
         players: [],
-        spectators: []
+        spectators: [],
+        poll: null
     };
     for (let i = 0; i < game.players.length; i++)
         data.players.push(new Player(game.players[i].id, null, game.players[i].name, game.players[i].alive, game.players[i].team));
     for (let i = 0; i < game.spectators.length; i++)
         data.spectators.push(new Spectator(game.spectators[i].id, null, game.spectators[i].name));
+    if (game.poll !== null) {
+        // Convert poll to shorter form.
+        var entries = [];
+        for (let i = 0; i < game.poll.entries.length; i++) {
+            const entry = game.poll.entries[i];
+            var votes = [];
+            for (let j = 0; j < entry.votes.length; j++)
+                votes.push(entry.votes[j].id);
+            var newEntry = new PollEntry(entry.label);
+            newEntry.votes = votes;
+            newEntry.voteCount = entry.voteCount;
+            newEntry.votesString = entry.votesString;
+            entries.push(newEntry);
+        }
+        var poll = new Poll(game.poll.title, entries);
+        poll.timer = null;
+        poll.open = game.poll.open;
+        poll.message = game.poll.message !== null ? game.poll.message.id : null;
+        data.poll = poll;
+    }
 
     const gameJson = JSON.stringify(data);
     return new Promise((resolve) => {
@@ -73,4 +96,25 @@ module.exports.load = function (game) {
     }
     for (let i = 0; i < game.spectators.length; i++)
         game.spectators[i].member.addRole(settings.spectatorRole).catch();
+
+    // Remake poll.
+    var entries = [];
+    for (let i = 0; i < gameJson.poll.entries.length; i++) {
+        const entry = gameJson.poll.entries[i];
+        var votes = [];
+        for (let j = 0; j < entry.votes.length; j++)
+            votes.push(game.players.find(player => player.id === entry.votes[j]));
+        var newEntry = new PollEntry(entry.label);
+        newEntry.votes = votes;
+        newEntry.voteCount = entry.voteCount;
+        newEntry.votesString = entry.votesString;
+        entries.push(newEntry);
+    }
+    var poll = new Poll(gameJson.poll.title, entries);
+    poll.timer = null;
+    poll.open = gameJson.poll.open;
+    if (gameJson.poll.message !== null)
+        game.guild.channels.get(settings.announcementChannel).fetchMessage(gameJson.poll.message).then(message => game.poll.message = message).catch(console.error);
+    else game.poll.message = null;
+    game.poll = poll;
 };

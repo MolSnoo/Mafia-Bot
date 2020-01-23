@@ -45,9 +45,11 @@ module.exports.run = async (bot, game, message, command, args) => {
     game.poll = new Poll(title, entries);
 
     const channel = game.guild.channels.get(settings.announcementChannel);
-    channel.send(game.poll.stringify()).then(message => game.poll.message = message).catch(console.error);
+    channel.send(game.poll.stringify()).then(message => {
+        game.poll.message = message;
+        // Save the game.
+        saveLoader.save(game);
+    }).catch(console.error);
 
-    // Save the game.
-    //saveLoader.save(game);
     return;
 };

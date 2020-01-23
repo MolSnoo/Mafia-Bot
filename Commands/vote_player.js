@@ -1,4 +1,5 @@
 ﻿const settings = include('settings.json');
+const saveLoader = include(`${settings.modulesDir}/saveLoader.js`);
 
 module.exports.config = {
     name: "vote_player",
@@ -52,7 +53,7 @@ module.exports.run = async (bot, game, message, command, args, player) => {
     message.channel.send(`${player.name} voted for ${entry.label}!`);
 
     // Save the game.
-    //saveLoader.save(game);
+    saveLoader.save(game);
 
     return;
 };

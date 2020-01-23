@@ -26,7 +26,7 @@ module.exports.run = async (bot, game, message, command, args) => {
         game.poll.timer = null;
         channel.send("Majority has been lost!");
         // Save the game.
-        //saveLoader.save(game);
+        saveLoader.save(game);
         return;
     }
     if (game.poll.timer !== null) return message.reply(`there is already majority on the current poll. Use \`${settings.commandPrefix}majority lost\` to cancel it first.`);
@@ -44,6 +44,8 @@ module.exports.run = async (bot, game, message, command, args) => {
         game.poll.open = false;
         game.poll.timer = null;
         channel.send("The poll is closed!");
+        // Save the game.
+        saveLoader.save(game);
     }, time);
     
     return;
