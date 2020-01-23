@@ -18,8 +18,8 @@ class PollEntry {
                 if (a.name > b.name) return 1;
                 return 0;
             });
-            const voterString = sortedVoters.join(", ");
-            string += `    ${voterString}\n`;
+            const voterString = sortedVoters.map(voter => voter.name).join(", ");
+            string += `     Voted by: ${voterString}\n`;
         }
         return string;
     }
