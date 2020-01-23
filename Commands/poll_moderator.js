@@ -8,9 +8,11 @@ module.exports.config = {
     name: "poll_moderator",
     description: "Creates a new poll.",
     details: "Creates a new poll with the specified title and entries. The poll title must be wrapped in quotation marks. "
-        + "All poll entries must be comma-separated. The poll will be posted in #game-announcements.",
+        + "All poll entries must be comma-separated. If \"living\" is given instead of any specific entries, then "
+        + "the poll entries will be the list of all living players. The poll will be posted in #game-announcements.",
     usage: `${settings.commandPrefix}poll "Who will be hanged?" Brighid, Chris, Caleb, Emily, Jamie, Jared, Kiki, Liam, MolSno, Rebecca, Tori\n`
-        + `${settings.commandPrefix}poll "Who will receive punishment? (2 majority)" Chris, Cory, Liam`,
+        + `${settings.commandPrefix}poll "Who will receive punishment? (2 majority)" Chris, Cory, Liam`
+        + `${settings.commandPrefix}poll "Who to hang? (5 majority)" living`,
     usableBy: "Moderator",
     aliases: ["poll"],
     requiresGame: true
@@ -27,11 +29,12 @@ module.exports.run = async (bot, game, message, command, args) => {
     // Get title.
     var title = input.substring(input.indexOf('"') + 1, input.lastIndexOf('"'));
     if (!title || title === '"') return message.reply("you need to supply a title in quotation marks.");
-
     // Get entries.
     input = input.substring(input.lastIndexOf('"') + 1).trim();
+    if (input.toLowerCase() === "living")
+        input = game.players.filter(player => player.alive === true).map(player => player.name).join(',');
     const inputEntries = input.split(',');
-    if (inputEntries.length === 1) return message.reply("you need to supply at least one option.");
+    if (inputEntries.length === 1 && inputEntries[0].trim() === "") return message.reply("you need to supply at least one option.");
 
     var entries = [];
     for (let i = 0; i < inputEntries.length; i++) {
@@ -42,7 +45,7 @@ module.exports.run = async (bot, game, message, command, args) => {
     game.poll = new Poll(title, entries);
 
     const channel = game.guild.channels.get(settings.announcementChannel);
-    channel.send("Poll message").then(message => { game.poll.message = message; console.log(game.poll); }).catch(console.error);
+    channel.send(game.poll.stringify()).then(message => game.poll.message = message).catch(console.error);
 
     // Save the game.
     //saveLoader.save(game);
