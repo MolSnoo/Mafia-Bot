@@ -8,6 +8,7 @@
 
   "savedDataFileName": "currentGame.json",
   "refreshStatusInterval": 1,
+  "defaultMajorityTime": 30,
 
   "onlineActivity": {
     "type": "WATCHING",

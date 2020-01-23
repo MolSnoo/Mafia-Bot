@@ -4,6 +4,7 @@ class Poll {
     constructor(title, entries) {
         this.title = title;
         this.entries = entries;
+        this.timer = null;
         this.open = true;
         this.message = null;
     }
