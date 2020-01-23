@@ -37,7 +37,7 @@ module.exports.execute = async (command, bot, game, message, player) => {
             message.reply("There is no game currently running.");
             return;
         }
-        if (message.channel.type === "dm" || settings.roomCategories.includes(message.channel.parentID)) {
+        if (settings.gameCategory.includes(message.channel.parentID)) {
             player = null;
             for (let i = 0; i < game.players.length; i++) {
                 if (game.players[i].id === message.author.id && game.players[i].alive) {
