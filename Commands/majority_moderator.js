@@ -8,7 +8,7 @@ module.exports.config = {
         + `If no number is given, the poll will close after ${settings.defaultMajorityTime} minutes. If "lost" is used as an argument instead of a number, `
         + "the current majority timer will be canceled.",
     usage: `${settings.commandPrefix}majority\n`
-        + `${settings.commandPrefix}majority 20`
+        + `${settings.commandPrefix}majority 20\n`
         + `${settings.commandPrefix}majority lost`,
     usableBy: "Moderator",
     aliases: ["majority"],
