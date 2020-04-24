@@ -39,12 +39,14 @@ module.exports.run = async (bot, game, message, command, args, player) => {
     // If the player previously cast a vote, remove it.
     if (previousVote !== null) {
         previousVote.votes.splice(previousVote.votes.indexOf(player), 1);
-        previousVote.voteCount--;
+        if (player.team === "Mayor") previousVote.voteCount -= 3;
+        else previousVote.voteCount--;
         previousVote.votesString = previousVote.stringify();
     }
     // Now cast the player's vote.
     entry.votes.push(player);
-    entry.voteCount++;
+    if (player.team === "Mayor") entry.voteCount += 3;
+    else entry.voteCount++;
     entry.votesString = entry.stringify();
 
     // Update the poll message.

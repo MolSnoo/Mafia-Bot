@@ -30,7 +30,8 @@ module.exports.run = async (bot, game, message, command, args, player) => {
 
     // Remove the player's vote.
     entry.votes.splice(entry.votes.indexOf(player), 1);
-    entry.voteCount--;
+    if (player.team === "Mayor") entry.voteCount -= 3;
+    else entry.voteCount--;
     entry.votesString = entry.stringify();
 
     // Update the poll message.

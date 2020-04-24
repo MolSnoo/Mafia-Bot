@@ -98,23 +98,25 @@ module.exports.load = function (game) {
         game.spectators[i].member.addRole(settings.spectatorRole).catch();
 
     // Remake poll.
-    var entries = [];
-    for (let i = 0; i < gameJson.poll.entries.length; i++) {
-        const entry = gameJson.poll.entries[i];
-        var votes = [];
-        for (let j = 0; j < entry.votes.length; j++)
-            votes.push(game.players.find(player => player.id === entry.votes[j]));
-        var newEntry = new PollEntry(entry.label);
-        newEntry.votes = votes;
-        newEntry.voteCount = entry.voteCount;
-        newEntry.votesString = entry.votesString;
-        entries.push(newEntry);
+    if (gameJson.poll !== null) {
+        var entries = [];
+        for (let i = 0; i < gameJson.poll.entries.length; i++) {
+            const entry = gameJson.poll.entries[i];
+            var votes = [];
+            for (let j = 0; j < entry.votes.length; j++)
+                votes.push(game.players.find(player => player.id === entry.votes[j]));
+            var newEntry = new PollEntry(entry.label);
+            newEntry.votes = votes;
+            newEntry.voteCount = entry.voteCount;
+            newEntry.votesString = entry.votesString;
+            entries.push(newEntry);
+        }
+        var poll = new Poll(gameJson.poll.title, entries);
+        poll.timer = null;
+        poll.open = gameJson.poll.open;
+        if (gameJson.poll.message !== null)
+            game.guild.channels.get(settings.announcementChannel).fetchMessage(gameJson.poll.message).then(message => game.poll.message = message).catch(console.error);
+        else game.poll.message = null;
+        game.poll = poll;
     }
-    var poll = new Poll(gameJson.poll.title, entries);
-    poll.timer = null;
-    poll.open = gameJson.poll.open;
-    if (gameJson.poll.message !== null)
-        game.guild.channels.get(settings.announcementChannel).fetchMessage(gameJson.poll.message).then(message => game.poll.message = message).catch(console.error);
-    else game.poll.message = null;
-    game.poll = poll;
 };
