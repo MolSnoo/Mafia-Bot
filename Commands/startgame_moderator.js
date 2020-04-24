@@ -5,7 +5,7 @@ module.exports.config = {
     name: "startgame_moderator",
     description: "Starts a game.",
     details: 'Starts a new game. You must specify a timer using either hours (h) or minutes (m). '
-        + 'During this time, any players with the Associate role will be able to join using the play command, '
+        + 'During this time, any players with the Eligible to Play role will be able to join using the play command, '
         + 'at which point they will be given the Player role. When the timer reaches 0, '
         + 'the game data will be saved and players will no longer be able to join unless you use the add command.',
     usage: `${settings.commandPrefix}startgame 24h\n`

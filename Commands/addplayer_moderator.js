@@ -6,7 +6,7 @@ const Player = include(`${settings.dataDir}/Player.js`);
 module.exports.config = {
     name: "addplayer_moderator",
     description: "Adds a player to the game.",
-    details: "Adds the specified member to the game as a player. Note that the member must have the Associate role in order to be added to the game.",
+    details: "Adds the specified member to the game as a player. Note that the member must have the Eligible to Play role in order to be added to the game.",
     usage: `${settings.commandPrefix}addplayer cory\n`
         + `${settings.commandPrefix}add tori`,
     usableBy: "Moderator",
@@ -25,7 +25,7 @@ module.exports.run = async (bot, game, message, command, args) => {
     var member = game.guild.members.find(member => member.displayName.toLowerCase() === input.toLowerCase());
     if (!member) return message.reply(`couldn't find anyone on the server named "${input}".`);
     // Make sure the member has the eligible role.
-    if (!member.roles.find(role => role.id === settings.eligibleRole)) return message.reply(`${member.displayName} does not have the Associate role and cannot play.`);
+    if (!member.roles.find(role => role.id === settings.eligibleRole)) return message.reply(`${member.displayName} does not have the Eligible to Play role and cannot play.`);
     // Make sure the member is not already playing.
     for (let i = 0; i < game.players.length; i++) {
         if (game.players[i].id === member.id)

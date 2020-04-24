@@ -26,7 +26,7 @@ module.exports.run = async (bot, game, message, args, player) => {
         let embed = new discord.RichEmbed()
             .setColor('1F8B4C')
             .setAuthor(`${game.guild.me.displayName} Help`, bot.user.avatarURL)
-            .setDescription(`These are the available commands for users with the Associate role.`);
+            .setDescription(`These are the available commands for users with the Eligible to Play role.`);
 
         roleCommands.forEach(function (value, key, map) {
             const commandName = key.substring(0, key.indexOf('_'));
