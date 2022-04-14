@@ -10,8 +10,8 @@ module.exports.config = {
     details: "Creates a new poll with the specified title and entries. The poll title must be wrapped in quotation marks. "
         + "All poll entries must be comma-separated. If \"living\" is given instead of any specific entries, then "
         + "the poll entries will be the list of all living players. The poll will be posted in #game-announcements.",
-    usage: `${settings.commandPrefix}poll "Who will be hanged?" Brighid, Chris, Caleb, Emily, Jamie, Jared, Kiki, Liam, MolSno, Rebecca, Tori\n`
-        + `${settings.commandPrefix}poll "Who will receive punishment? (2 majority)" Chris, Cory, Liam`
+    usage: `${settings.commandPrefix}poll "Who will be hanged?" Brighid, Chris, Caleb, Emily, James, Jamie, Kiki, Liam, Rebecca, Tori, Vivian\n`
+        + `${settings.commandPrefix}poll "Who will receive punishment? (2 majority)" Chris, Cody, Liam\n`
         + `${settings.commandPrefix}poll "Who to hang? (5 majority)" living`,
     usableBy: "Moderator",
     aliases: ["poll"],
@@ -20,7 +20,7 @@ module.exports.config = {
 
 module.exports.run = async (bot, game, message, command, args) => {
     if (args.length === 0) {
-        message.reply("you need to supply a title and at least one option. Usage:");
+        message.reply("You need to supply a title and at least one option. Usage:");
         message.channel.send(exports.config.usage);
         return;
     }
@@ -28,13 +28,13 @@ module.exports.run = async (bot, game, message, command, args) => {
     var input = args.join(" ").replace(/“/g, '"').replace(/”/g, '"');
     // Get title.
     var title = input.substring(input.indexOf('"') + 1, input.lastIndexOf('"'));
-    if (!title || title === '"') return message.reply("you need to supply a title in quotation marks.");
+    if (!title || title === '"') return message.reply("You need to supply a title in quotation marks.");
     // Get entries.
     input = input.substring(input.lastIndexOf('"') + 1).trim();
     if (input.toLowerCase() === "living")
         input = game.players.filter(player => player.alive === true).map(player => player.name).join(',');
     const inputEntries = input.split(',');
-    if (inputEntries.length === 1 && inputEntries[0].trim() === "") return message.reply("you need to supply at least one option.");
+    if (inputEntries.length === 1 && inputEntries[0].trim() === "") return message.reply("You need to supply at least one option.");
 
     var entries = [];
     for (let i = 0; i < inputEntries.length; i++) {
@@ -44,7 +44,7 @@ module.exports.run = async (bot, game, message, command, args) => {
 
     game.poll = new Poll(title, entries);
 
-    const channel = game.guild.channels.get(settings.announcementChannel);
+    const channel = game.guild.channels.cache.get(settings.announcementChannel);
     channel.send(game.poll.stringify()).then(message => {
         game.poll.message = message;
         // Save the game.

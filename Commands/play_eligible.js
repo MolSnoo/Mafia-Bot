@@ -18,10 +18,11 @@ module.exports.run = async (bot, game, message, args) => {
     }
     if (!game.canJoin) return message.reply("You were too late to join the game. Contact a moderator to be added before the game starts.");
 
-    const member = game.guild.members.find(member => member.id === message.author.id);
+    const member = game.guild.members.cache.find(member => member.id === message.author.id);
+    if (member.displayName.includes(' ')) return message.reply("You cannot join the game with a space in your nickname. Please change your nickname by editing your server profile before joining the game.");
     var player = new Player(message.author.id, member, member.displayName, true, "");
     game.players.push(player);
-    member.addRole(settings.playerRole);
+    member.roles.add(settings.playerRole);
     message.channel.send(`<@${message.author.id}> joined the game!`);
 
     return;

@@ -4,10 +4,10 @@ const discord = require('discord.js');
 module.exports.execute = async (command, bot, game, message, player) => {
     var isModerator = isPlayer = isEligible = false;
     // First, determine who is using the command.
-    if ((message.channel.id === settings.commandChannel || command.startsWith('delete')) && message.member.roles.find(role => role.id === settings.moderatorRole)) isModerator = true;
-    else if (message.member.roles.find(role => role.id === settings.playerRole)) isPlayer = true;
-    else if (settings.debug && message.member.roles.find(role => role.id === settings.testerRole)) isEligible = true;
-    else if (!settings.debug && message.member.roles.find(role => role.id === settings.eligibleRole)) isEligible = true;
+    if ((message.channel.id === settings.commandChannel || command.startsWith('delete')) && message.member.roles.cache.find(role => role.id === settings.moderatorRole)) isModerator = true;
+    else if (message.member.roles.cache.find(role => role.id === settings.playerRole)) isPlayer = true;
+    else if (settings.debug && message.member.roles.cache.find(role => role.id === settings.testerRole)) isEligible = true;
+    else if (!settings.debug && message.member.roles.cache.find(role => role.id === settings.eligibleRole)) isEligible = true;
     else return;
 
     const commandSplit = command.split(" ");

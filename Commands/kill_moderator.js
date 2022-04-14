@@ -15,7 +15,7 @@ module.exports.config = {
 
 module.exports.run = async (bot, game, message, command, args) => {
     if (args.length === 0) {
-        message.reply("you need to specify at least one player. Usage:");
+        message.reply("You need to specify at least one player. Usage:");
         message.channel.send(exports.config.usage);
         return;
     }
@@ -33,13 +33,13 @@ module.exports.run = async (bot, game, message, command, args) => {
     }
     if (args.length > 0) {
         const missingPlayers = args.join(", ");
-        return message.reply(`couldn't find player(s): ${missingPlayers}.`);
+        return message.reply(`Couldn't find player(s): ${missingPlayers}.`);
     }
 
     for (let i = 0; i < players.length; i++) {
         players[i].alive = false;
-        players[i].member.removeRole(settings.playerRole).catch();
-        players[i].member.addRole(settings.deadRole).catch();
+        players[i].member.roles.remove(settings.playerRole).catch();
+        players[i].member.roles.add(settings.deadRole).catch();
     }
 
     // Save the game.

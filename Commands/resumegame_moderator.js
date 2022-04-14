@@ -16,7 +16,7 @@ module.exports.config = {
 };
 
 module.exports.run = async (bot, game, message, command, args) => {
-    if (game.inProgress) return message.reply("cannot resume a game while one is already in progress.");
+    if (game.inProgress) return message.reply("Cannot resume a game while one is already in progress.");
     saveLoader.load(game);
     message.channel.send("Resumed game.");
 

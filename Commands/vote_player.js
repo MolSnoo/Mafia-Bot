@@ -13,12 +13,12 @@ module.exports.config = {
 
 module.exports.run = async (bot, game, message, command, args, player) => {
     if (args.length === 0) {
-        message.reply("you need to specify an option. Usage:");
+        message.reply("You need to specify an option. Usage:");
         message.channel.send(exports.config.usage);
         return;
     }
-    if (!game.poll) return message.reply(`there is no poll to vote on.`);
-    if (!game.poll.open) return message.reply(`the poll is no longer open.`);
+    if (!game.poll) return message.reply(`There is no poll to vote on.`);
+    if (!game.poll.open) return message.reply(`The poll is no longer open.`);
 
     var input = args.join(" ");
 
@@ -33,8 +33,8 @@ module.exports.run = async (bot, game, message, command, args, player) => {
                 previousVote = game.poll.entries[i];
         }
     }
-    if (entry === null) return message.reply(`that is not an option on the poll.`);
-    if (previousVote !== null && entry.label === previousVote.label) return message.reply(`you have already voted for ${entry.label}.`);
+    if (entry === null) return message.reply(`That is not an option on the poll.`);
+    if (previousVote !== null && entry.label === previousVote.label) return message.reply(`You have already voted for ${entry.label}.`);
 
     // If the player previously cast a vote, remove it.
     if (previousVote !== null) {

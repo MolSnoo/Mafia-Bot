@@ -22,7 +22,7 @@ module.exports.run = async (bot, game, message, command, args, player) => {
     });
 
     if (args.length === 0) {
-        let embed = new discord.RichEmbed()
+        let embed = new discord.MessageEmbed()
             .setColor('1F8B4C')
             .setAuthor(`${game.guild.me.displayName} Help`, bot.user.avatarURL)
             .setDescription(`These are the available commands for users with the Player role.`);
@@ -35,10 +35,10 @@ module.exports.run = async (bot, game, message, command, args, player) => {
     }
     else {
         let command = roleCommands.find(command => command.aliases.includes(args[0]));
-        if (!command) return message.reply(`couldn't find command "${args[0]}".`);
+        if (!command) return message.reply(`Couldn't find command "${args[0]}".`);
 
         const commandName = command.name.charAt(0).toUpperCase() + command.name.substring(1, command.name.indexOf('_'));
-        let embed = new discord.RichEmbed()
+        let embed = new discord.MessageEmbed()
             .setColor('1F8B4C')
             .setAuthor(`${commandName} Command Help`, bot.user.avatarURL)
             .setDescription(command.description);

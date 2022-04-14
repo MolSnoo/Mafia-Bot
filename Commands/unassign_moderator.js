@@ -6,11 +6,11 @@ module.exports.config = {
     description: "Unassigns the given player(s) from a mafia team.",
     details: "Unassigns one or more players from the specified mafia team. This command removes their ability to read that team's channel. "
         + "This command should generally only be used when a player has mistakenly been assigned to a mafia team. Alternatively, this can be "
-        + "used to remove the Mayor role from one or more players, in case they were assigned it accidentally.",
+        + "used to remove the Mayor or Lovers role from one or more players, in case they were assigned it accidentally.",
     usage: `${settings.commandPrefix}unassign julia mafia\n`
         + `${settings.commandPrefix}unassign chris mafia 1\n`
         + `${settings.commandPrefix}unassign jamie liam rebecca tim mafia 2\n`
-        + `${settings.commandPrefix}unassign brighid cory mafia 3\n`
+        + `${settings.commandPrefix}unassign brighid cody lovers\n`
         + `${settings.commandPrefix}unassign tim mayor`,
     usableBy: "Moderator",
     aliases: ["unassign"],
@@ -19,7 +19,7 @@ module.exports.config = {
 
 module.exports.run = async (bot, game, message, command, args) => {
     if (args.length === 0) {
-        message.reply("you need to specify at least one player and a team or the Mayor role. Usage:");
+        message.reply("You need to specify at least one player and a team or the Mayor or Lovers role. Usage:");
         message.channel.send(exports.config.usage);
         return;
     }
@@ -43,13 +43,13 @@ module.exports.run = async (bot, game, message, command, args) => {
         team = "Mafia 1";
     else if (input.endsWith("mafia 2"))
         team = "Mafia 2";
-    else if (input.endsWith("mafia 3"))
-        team = "Mafia 3";
+    else if (input.endsWith("lovers") || input.endsWith("mafia 3"))
+        team = "Lovers";
     else if (input.endsWith("mayor"))
         team = "Mayor";
 
     if (team === "") {
-        message.reply(`invalid team given. Usage:`);
+        message.reply(`Invalid team given. Usage:`);
         message.channel.send(exports.config.usage);
         return;
     }
@@ -57,6 +57,7 @@ module.exports.run = async (bot, game, message, command, args) => {
     // Team was found, so make sure there were no incorrect players.
     if (input.includes("mafia")) input = input.substring(0, input.indexOf("mafia"));
     else if (input.includes("mayor")) input = input.substring(0, input.indexOf("mayor"));
+    else if (input.includes("lovers")) input = input.substring(0, input.indexOf("lovers"));
     args = input.split(" ");
     // Remove any blank entries in args.
     for (let i = 0; i < args.length; i++) {
@@ -67,19 +68,19 @@ module.exports.run = async (bot, game, message, command, args) => {
     }
     if (args.length > 0) {
         const missingPlayers = args.join(", ");
-        return message.reply(`couldn't find player(s): ${missingPlayers}.`);
+        return message.reply(`Couldn't find player(s): ${missingPlayers}.`);
     }
     if (players.length === 0) {
-        message.reply("you need to specify at least one player. Usage:");
+        message.reply("You need to specify at least one player. Usage:");
         message.channel.send(exports.config.usage);
         return;
     }
 
     // Now assign all of the players to the given team.
     for (let i = 0; i < players.length; i++) {
-        if (team === "Mafia 1") game.guild.channels.get(settings.mafiaChannel1).overwritePermissions(players[i].member, { VIEW_CHANNEL: null });
-        else if (team === "Mafia 2") game.guild.channels.get(settings.mafiaChannel2).overwritePermissions(players[i].member, { VIEW_CHANNEL: null });
-        else if (team === "Mafia 3") game.guild.channels.get(settings.mafiaChannel3).overwritePermissions(players[i].member, { VIEW_CHANNEL: null });
+        if (team === "Mafia 1") game.guild.channels.cache.get(settings.mafiaChannel1).createOverwrite(players[i].member, { VIEW_CHANNEL: null });
+        else if (team === "Mafia 2") game.guild.channels.cache.get(settings.mafiaChannel2).createOverwrite(players[i].member, { VIEW_CHANNEL: null });
+        else if (team === "Lovers") game.guild.channels.cache.get(settings.mafiaChannel3).createOverwrite(players[i].member, { VIEW_CHANNEL: null });
         else if (players[i].team === "Mayor" && game.poll !== null && game.poll.open) {
             for (let j = 0; j < game.poll.entries.length; j++) {
                 let foundPlayerVote = false;

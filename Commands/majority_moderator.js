@@ -16,10 +16,10 @@ module.exports.config = {
 };
 
 module.exports.run = async (bot, game, message, command, args) => {
-    if (!game.poll) return message.reply("there is no poll for majority to apply to.");
-    if (!game.poll.open) return message.reply("the current poll is already closed.");
+    if (!game.poll) return message.reply("There is no poll for majority to apply to.");
+    if (!game.poll.open) return message.reply("The current poll is already closed.");
 
-    const channel = game.guild.channels.get(settings.announcementChannel);
+    const channel = game.guild.channels.cache.get(settings.announcementChannel);
 
     if (args[0] === "lost" || args[0] === "Lost") {
         clearTimeout(game.poll.timer);
@@ -29,10 +29,10 @@ module.exports.run = async (bot, game, message, command, args) => {
         saveLoader.save(game);
         return;
     }
-    if (game.poll.timer !== null) return message.reply(`there is already majority on the current poll. Use \`${settings.commandPrefix}majority lost\` to cancel it first.`);
+    if (game.poll.timer !== null) return message.reply(`There is already majority on the current poll. Use \`${settings.commandPrefix}majority lost\` to cancel it first.`);
 
     var time = args[0] ? args[0] : settings.defaultMajorityTime;
-    if (isNaN(time)) return message.reply("invalid time given. Input must be the number of minutes until the poll will close.");
+    if (isNaN(time)) return message.reply("Invalid time given. Input must be the number of minutes until the poll will close.");
     // Convert minutes to milliseconds.
     time = time * 60000;
 

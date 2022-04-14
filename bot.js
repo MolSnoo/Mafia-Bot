@@ -6,7 +6,7 @@ const credentials = include('credentials.json');
 const commandHandler = include(`${settings.modulesDir}/commandHandler.js`);
 
 const discord = require('discord.js');
-const bot = new discord.Client();
+const bot = new discord.Client({ fetchAllMembers: true, retryLimit: Infinity });
 const fs = require('fs');
 
 var game = include(`game.json`);
@@ -41,24 +41,21 @@ function updateStatus() {
     }, 0);
     var aliveString = " - " + numPlayersAlive + " player" + (numPlayersAlive !== 1 ? "s" : "") + " alive";
 
-    if (settings.debug) {
-        bot.user.setActivity(settings.debugModeActivity.string + aliveString, { type: settings.debugModeActivity.type });
-        bot.user.setStatus("dnd");
-    }
+    if (settings.debug)
+        bot.user.setPresence({ status: "dnd", activity: { name: settings.debugModeActivity.string + aliveString, type: settings.debugModeActivity.type } });
     else {
         if (game.inProgress && !game.canJoin)
-            bot.user.setActivity(settings.gameInProgressActivity.string + aliveString, { type: settings.gameInProgressActivity.type, url: settings.gameInProgressActivity.url });
+            bot.user.setPresence({ status: "online", activity: { name: settings.gameInProgressActivity.string + aliveString, type: settings.gameInProgressActivity.type, url: settings.gameInProgressActivity.url } });
         else
-            bot.user.setActivity(settings.onlineActivity.string, { type: settings.onlineActivity.type });
-        bot.user.setStatus("online");
+            bot.user.setPresence({ status: "online", activity: { name: settings.onlineActivity.string, type: settings.onlineActivity.type } });
     }
 }
 
 bot.on('ready', async () => {
-    console.log(`${bot.user.username} is online on ${bot.guilds.size} server(s).`);
+    console.log(`${bot.user.username} is online on ${bot.guilds.cache.size} server(s).`);
     loadCommands();
-    game.guild = bot.guilds.first();
-    game.commandChannel = game.guild.channels.find(channel => channel.id === settings.commandChannel);
+    game.guild = bot.guilds.cache.first();
+    game.commandChannel = game.guild.channels.cache.find(channel => channel.id === settings.commandChannel);
     updateStatus();
 
     // Run living players check periodically
@@ -78,6 +75,10 @@ bot.on('message', async message => {
         const command = message.content.substring(settings.commandPrefix.length);
         commandHandler.execute(command, bot, game, message);
     }
+});
+
+process.on('unhandledRejection', error => {
+    console.error('Unhandled promise rejection:', error);
 });
 
 bot.login(credentials.token);
