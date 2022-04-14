@@ -81,9 +81,9 @@ module.exports.run = async (bot, game, message, command, args) => {
         // Prevent double Mayor votes.
         if (players[i].team === "Mayor" && team === "Mayor") continue;
         players[i].team = team;
-        if (players[i].team === "Mafia 1") game.guild.channels.cache.get(settings.mafiaChannel1).createOverwrite(players[i].member, { VIEW_CHANNEL: true });
-        else if (players[i].team === "Mafia 2") game.guild.channels.cache.get(settings.mafiaChannel2).createOverwrite(players[i].member, { VIEW_CHANNEL: true });
-        else if (players[i].team === "Lovers") game.guild.channels.cache.get(settings.mafiaChannel3).createOverwrite(players[i].member, { VIEW_CHANNEL: true });
+        if (players[i].team === "Mafia 1") game.guild.channels.cache.get(settings.mafiaChannel1).permissionOverwrites.create(players[i].member, { VIEW_CHANNEL: true });
+        else if (players[i].team === "Mafia 2") game.guild.channels.cache.get(settings.mafiaChannel2).permissionOverwrites.create(players[i].member, { VIEW_CHANNEL: true });
+        else if (players[i].team === "Lovers") game.guild.channels.cache.get(settings.mafiaChannel3).permissionOverwrites.create(players[i].member, { VIEW_CHANNEL: true });
         else if (players[i].team === "Mayor" && game.poll !== null && game.poll.open) {
             for (let j = 0; j < game.poll.entries.length; j++) {
                 let foundPlayerVote = false;

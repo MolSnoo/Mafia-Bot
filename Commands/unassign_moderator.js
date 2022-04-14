@@ -78,9 +78,9 @@ module.exports.run = async (bot, game, message, command, args) => {
 
     // Now assign all of the players to the given team.
     for (let i = 0; i < players.length; i++) {
-        if (team === "Mafia 1") game.guild.channels.cache.get(settings.mafiaChannel1).createOverwrite(players[i].member, { VIEW_CHANNEL: null });
-        else if (team === "Mafia 2") game.guild.channels.cache.get(settings.mafiaChannel2).createOverwrite(players[i].member, { VIEW_CHANNEL: null });
-        else if (team === "Lovers") game.guild.channels.cache.get(settings.mafiaChannel3).createOverwrite(players[i].member, { VIEW_CHANNEL: null });
+        if (team === "Mafia 1") game.guild.channels.cache.get(settings.mafiaChannel1).permissionOverwrites.create(players[i].member, { VIEW_CHANNEL: null });
+        else if (team === "Mafia 2") game.guild.channels.cache.get(settings.mafiaChannel2).permissionOverwrites.create(players[i].member, { VIEW_CHANNEL: null });
+        else if (team === "Lovers") game.guild.channels.cache.get(settings.mafiaChannel3).permissionOverwrites.create(players[i].member, { VIEW_CHANNEL: null });
         else if (players[i].team === "Mayor" && game.poll !== null && game.poll.open) {
             for (let j = 0; j < game.poll.entries.length; j++) {
                 let foundPlayerVote = false;

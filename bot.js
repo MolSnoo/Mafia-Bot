@@ -6,7 +6,14 @@ const credentials = include('credentials.json');
 const commandHandler = include(`${settings.modulesDir}/commandHandler.js`);
 
 const discord = require('discord.js');
-const bot = new discord.Client({ fetchAllMembers: true, retryLimit: Infinity });
+const bot = new discord.Client({
+    retryLimit: Infinity,
+    intents: [
+        discord.Intents.FLAGS.GUILDS,
+        discord.Intents.FLAGS.GUILD_MEMBERS,
+        discord.Intents.FLAGS.GUILD_MESSAGES
+    ]
+});
 const fs = require('fs');
 
 var game = include(`game.json`);
@@ -42,12 +49,12 @@ function updateStatus() {
     var aliveString = " - " + numPlayersAlive + " player" + (numPlayersAlive !== 1 ? "s" : "") + " alive";
 
     if (settings.debug)
-        bot.user.setPresence({ status: "dnd", activity: { name: settings.debugModeActivity.string + aliveString, type: settings.debugModeActivity.type } });
+        bot.user.setPresence({ status: "dnd", activities: [{ name: settings.debugModeActivity.string + aliveString, type: settings.debugModeActivity.type }] });
     else {
         if (game.inProgress && !game.canJoin)
-            bot.user.setPresence({ status: "online", activity: { name: settings.gameInProgressActivity.string + aliveString, type: settings.gameInProgressActivity.type, url: settings.gameInProgressActivity.url } });
+            bot.user.setPresence({ status: "online", activities: [{ name: settings.gameInProgressActivity.string + aliveString, type: settings.gameInProgressActivity.type, url: settings.gameInProgressActivity.url }] });
         else
-            bot.user.setPresence({ status: "online", activity: { name: settings.onlineActivity.string, type: settings.onlineActivity.type } });
+            bot.user.setPresence({ status: "online", activities: [{ name: settings.onlineActivity.string, type: settings.onlineActivity.type }] });
     }
 }
 
@@ -64,10 +71,10 @@ bot.on('ready', async () => {
     }, settings.refreshStatusInterval * 60000);
 });
 
-bot.on('message', async message => {
+bot.on('messageCreate', async message => {
     // Prevent bot from responding to its own messages.
     if (message.author === bot.user) return;
-    if (message.channel.type === "dm") return;
+    if (message.channel.type === "DM") return;
 
     // If the message begins with the command prefix, attempt to run a command.
     // If the command is run successfully, the message will be deleted.

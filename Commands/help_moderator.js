@@ -25,14 +25,14 @@ module.exports.run = async (bot, game, message, command, args) => {
     if (args.length === 0) {
         let embed = new discord.MessageEmbed()
             .setColor('1F8B4C')
-            .setAuthor(`${game.guild.me.displayName} Help`, bot.user.avatarURL)
+            .setAuthor({ name: `${game.guild.me.displayName} Help`, iconURL: bot.user.avatarURL() })
             .setDescription(`These are the available commands for users with the Moderator role.`);
 
         roleCommands.forEach(function (value, key, map) {
             const commandName = key.substring(0, key.indexOf('_'));
             embed.addField(`${settings.commandPrefix}${commandName}`, value.description);
         });
-        message.channel.send(embed);
+        message.channel.send({ embeds: [embed] });
     }
     else {
         let command = roleCommands.find(command => command.aliases.includes(args[0]));
@@ -41,7 +41,7 @@ module.exports.run = async (bot, game, message, command, args) => {
         const commandName = command.name.charAt(0).toUpperCase() + command.name.substring(1, command.name.indexOf('_'));
         let embed = new discord.MessageEmbed()
             .setColor('1F8B4C')
-            .setAuthor(`${commandName} Command Help`, bot.user.avatarURL)
+            .setAuthor({ name: `${commandName} Command Help`, iconURL: bot.user.avatarURL() })
             .setDescription(command.description);
 
         let aliasString = "";
@@ -51,7 +51,7 @@ module.exports.run = async (bot, game, message, command, args) => {
         embed.addField("Examples", command.usage);
         embed.addField("Description", command.details);
 
-        message.channel.send(embed);
+        message.channel.send({ embeds: [embed] });
     }
 
     return;

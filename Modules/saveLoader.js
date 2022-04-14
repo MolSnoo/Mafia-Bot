@@ -50,7 +50,7 @@ module.exports.save = function (game) {
     });
 };
 
-module.exports.load = function (game) {
+module.exports.load = async function (game) {
     var gameJson = fs.readFileSync(settings.savedDataFileName, 'utf8');
     gameJson = JSON.parse(gameJson);
 
@@ -62,7 +62,7 @@ module.exports.load = function (game) {
         game.players.push(
             new Player(
                 gameJson.players[i].id,
-                game.guild.members.cache.find(member => member.id === gameJson.players[i].id),
+                await game.guild.members.fetch(gameJson.players[i].id),
                 gameJson.players[i].name,
                 gameJson.players[i].alive,
                 gameJson.players[i].team
@@ -73,7 +73,7 @@ module.exports.load = function (game) {
         game.spectators.push(
             new Spectator(
                 gameJson.spectators[i].id,
-                game.guild.members.cache.find(member => member.id === gameJson.spectators[i].id),
+                await game.guild.members.fetch(gameJson.spectators[i].id),
                 gameJson.spectators[i].name
             )
         );
@@ -90,9 +90,9 @@ module.exports.load = function (game) {
             player.member.roles.add(settings.deadRole).catch();
         }
 
-        if (player.team === "Mafia 1") game.guild.channels.cache.get(settings.mafiaChannel1).createOverwrite(player.member, { VIEW_CHANNEL: true });
-        else if (player.team === "Mafia 2") game.guild.channels.cache.get(settings.mafiaChannel2).createOverwrite(player.member, { VIEW_CHANNEL: true });
-        else if (player.team === "Mafia 3") game.guild.channels.cache.get(settings.mafiaChannel3).createOverwrite(player.member, { VIEW_CHANNEL: true });
+        if (player.team === "Mafia 1") game.guild.channels.cache.get(settings.mafiaChannel1).permissionOverwrites.create(player.member, { VIEW_CHANNEL: true });
+        else if (player.team === "Mafia 2") game.guild.channels.cache.get(settings.mafiaChannel2).permissionOverwrites.create(player.member, { VIEW_CHANNEL: true });
+        else if (player.team === "Lovers") game.guild.channels.cache.get(settings.mafiaChannel3).permissionOverwrites.create(player.member, { VIEW_CHANNEL: true });
     }
     for (let i = 0; i < game.spectators.length; i++)
         game.spectators[i].member.roles.add(settings.spectatorRole).catch();

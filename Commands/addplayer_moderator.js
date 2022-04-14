@@ -22,7 +22,8 @@ module.exports.run = async (bot, game, message, command, args) => {
     }
 
     var input = args.join(" ");
-    var member = game.guild.members.cache.find(member => member.displayName.toLowerCase() === input.toLowerCase());
+    var member = await game.guild.members.fetch({ query: input.toLowerCase(), limit: 1 });
+    member = member.first();
     if (!member) return message.reply(`Couldn't find anyone on the server named "${input}".`);
     // Make sure the member has the eligible role.
     if (!member.roles.cache.find(role => role.id === settings.eligibleRole)) return message.reply(`${member.displayName} does not have the Eligible to Play role and cannot play.`);

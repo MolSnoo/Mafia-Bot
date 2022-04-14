@@ -16,9 +16,9 @@ module.exports.run = async (bot, game, message, command, args) => {
     for (let i = 0; i < game.players.length; i++) {
         const player = game.players[i];
         // Revoke read access to any of the mafia channels.
-        if (player.team === "Mafia 1") game.guild.channels.cache.get(settings.mafiaChannel1).createOverwrite(player.member, { VIEW_CHANNEL: null });
-        else if (player.team === "Mafia 2") game.guild.channels.cache.get(settings.mafiaChannel2).createOverwrite(player.member, { VIEW_CHANNEL: null });
-        else if (player.team === "Mafia 3") game.guild.channels.cache.get(settings.mafiaChannel3).createOverwrite(player.member, { VIEW_CHANNEL: null });
+        if (player.team === "Mafia 1") game.guild.channels.cache.get(settings.mafiaChannel1).permissionOverwrites.create(player.member, { VIEW_CHANNEL: null });
+        else if (player.team === "Mafia 2") game.guild.channels.cache.get(settings.mafiaChannel2).permissionOverwrites.create(player.member, { VIEW_CHANNEL: null });
+        else if (player.team === "Lovers") game.guild.channels.cache.get(settings.mafiaChannel3).permissionOverwrites.create(player.member, { VIEW_CHANNEL: null });
 
         // Remove whatever role is appropriate.
         if (player.alive) player.member.roles.remove(settings.playerRole).catch();
