@@ -7,7 +7,8 @@ module.exports.config = {
     details: 'Starts a new game. You must specify a timer using either hours (h) or minutes (m). '
         + 'During this time, any players with the Eligible to Play role will be able to join using the play command, '
         + 'at which point they will be given the Player role. When the timer reaches 0, '
-        + 'the game data will be saved and players will no longer be able to join unless you use the add command.',
+        + 'the game data will be saved and players will no longer be able to join unless you use the add command. '
+        + 'You may also place at the end #p, 15p, to add a max limit for 15 players.',
     usage: `${settings.commandPrefix}startgame 24h\n`
         + `${settings.commandPrefix}start 0.25m\n` 
         + `${settings.commandPrefix} start 24h 15p`,
