@@ -7,5 +7,6 @@
   "endTimer": null,
   "players": [],
   "spectators": [],
-  "poll": null
+  "poll": null,
+  "maxPlayers": null
 }

@@ -14,7 +14,8 @@ module.exports.save = function (game) {
         endTimer: game.endTimer,
         players: [],
         spectators: [],
-        poll: null
+        poll: null, 
+        maxPlayers: game.maxPlayers
     };
     for (let i = 0; i < game.players.length; i++)
         data.players.push(new Player(game.players[i].id, null, game.players[i].name, game.players[i].alive, game.players[i].team));
@@ -58,6 +59,7 @@ module.exports.load = async function (game) {
     game.canJoin = gameJson.canJoin;
     game.halfTimer = gameJson.halfTimer;
     game.endTimer = gameJson.endTimer;
+    game.maxPlayers = gameJson.maxPlayers;
     for (let i = 0; i < gameJson.players.length; i++) {
         game.players.push(
             new Player(

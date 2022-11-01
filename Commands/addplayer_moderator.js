@@ -21,6 +21,10 @@ module.exports.run = async (bot, game, message, command, args) => {
         return;
     }
 
+    // Make sure that the amount of players is enough
+    if (game.maxPlayers && game.maxPlayers <= game.players.length)
+        return message.reply("You cannot go over the limit of players.");
+
     var input = args.join(" ");
     var member = await game.guild.members.fetch({ query: input.toLowerCase(), limit: 1 });
     member = member.first();
@@ -38,13 +42,28 @@ module.exports.run = async (bot, game, message, command, args) => {
     game.players.push(player);
     member.roles.add(settings.playerRole);
     
-    // Save the game.
-    saveLoader.save(game);
 
     var channel;
     if (settings.debug) channel = game.guild.channels.cache.get(settings.testingChannel);
     else channel = game.guild.channels.cache.get(settings.generalChannel);
     channel.send(`<@${member.id}> joined the game!`);
 
+    if (game.maxPlayers && game.maxPlayers == game.players.length) {
+        clearTimeout(game.halfTimer);
+        clearTimeout(game.endTimer);
+        game.halfTimer = null;
+        game.endTimer = null;
+
+        game.canJoin = false;
+
+        const playerRole = game.guild.roles.cache.find(role => role.id === settings.playerRole);
+        channel.send(`${playerRole}, The current game is at full capacity and cannot accept anymore players! The game will begin once the moderator is ready. Please use the .spectate command to watch the game`);
+
+        saveLoader.save(game);
+        return;
+    }
+
+    // Save the game.
+    saveLoader.save(game);
     return;
 };
