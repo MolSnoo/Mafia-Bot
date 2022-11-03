@@ -35,6 +35,7 @@ module.exports.run = async (bot, game, message, command, args) => {
     game.canJoin = false;
     game.players.length = 0;
     game.spectators.length = 0;
+    game.maxPlayers = null;
 
     var channel;
     if (settings.debug) channel = game.guild.channels.cache.get(settings.testingChannel);
