@@ -1,0 +1,27 @@
+[
+    {
+        "name": "command",
+        "seeBy": ["Moderator"],
+        "usableBy": ["Moderator"]
+    },
+    {
+        "name": "announcement",
+        "seeBy": ["Moderator", "Player", "Dead", "Spectator"],
+        "usableBy": ["Moderator"]
+    },
+    {
+        "name": "mafiaChannel1",
+        "seeBy": ["Moderator", "Dead", "Spectator"],
+        "usableBy": ["Moderator"]
+    },
+    {
+        "name": "mafiaChannel2",
+        "seeBy": ["Moderator", "Dead", "Spectator"],
+        "usableBy": ["Moderator"]
+    },
+    {
+        "name": "mafiaChannel3",
+        "seeBy": ["Moderator", "Dead", "Spectator"],
+        "usableBy": ["Moderator"]
+    }
+]

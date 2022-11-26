@@ -24,7 +24,7 @@ module.exports.execute = async (command, bot, game, message, player) => {
     if (!commandFile) return;
     const commandName = commandConfig.name.substring(0, commandConfig.name.indexOf('_'));
 
-    if (isModerator) {
+    if (isModerator) { // have to change this to be new games...
         if (commandConfig.requiresGame && !game.inProgress) {
             message.reply("There is no game currently running.");
             return;
@@ -37,7 +37,7 @@ module.exports.execute = async (command, bot, game, message, player) => {
             message.reply("There is no game currently running.");
             return;
         }
-        if (settings.gameCategory.includes(message.channel.parentId)) {
+        if (settings.gameCategory.includes(message.channel.parentId)) { // Going to have to change this to check all games. Perhaps default to the game they're in? 
             player = null;
             for (let i = 0; i < game.players.length; i++) {
                 if (game.players[i].id === message.author.id && game.players[i].alive) {
@@ -50,6 +50,7 @@ module.exports.execute = async (command, bot, game, message, player) => {
                 return;
             }
 
+            // Maybe here we only run the with the game that the player / moderator is playing? 
             commandFile.run(bot, game, message, commandSplit[0], args, player).then(() => { if (!settings.debug) message.delete().catch(); });
             return;
         }

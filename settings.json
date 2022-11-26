@@ -23,15 +23,15 @@
     "string": "Mafia"
   },
 
-  "testerRole": "668191989405057025",
-  "eligibleRole": "703345451838996591",
-  "playerRole": "668194175518244871",
-  "moderatorRole": "668193752145330200",
-  "deadRole": "668194606201962527",
-  "spectatorRole": "668195203768647715",
+  "testerRole": "1024123766730653826",
+  "eligibleRole": "1024123825417355275",
+  "playerRole": "1024123862255931392",
+  "moderatorRole": "1024123890936598588",
+  "deadRole": "1024123916328906814",
+  "spectatorRole": "1024123936654512189",
 
   "gameCategory": "668184016557703188",
-  "testingChannel": "668195715800891411",
+  "testingChannel": "268845550269497344",
   "generalChannel": "636315613589143565",
   "commandChannel": "668198773322678272",
   "announcementChannel": "668198839949328442",

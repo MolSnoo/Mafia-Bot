@@ -1,4 +1,5 @@
-﻿{
+﻿[
+  {
   "guild": null,
   "commandChannel": null,
   "inProgress": false,
@@ -7,5 +8,20 @@
   "endTimer": null,
   "players": [],
   "spectators": [],
-  "poll": null
+  "poll": null,
+  "roles": [
+    {
+      "name": "",
+      "color": "",
+      "id": ""
+    }
+  ],
+  "gameCategory": "668184016557703188",
+  "testingChannel": "268845550269497344",
+  "generalChannel": "636315613589143565",
+  "announcementChannel": "668198839949328442",
+  "mafiaChannel1": "668201100662407208",
+  "mafiaChannel2": "668201124548968460",
+  "mafiaChannel3": "668201149811392522"
 }
+]

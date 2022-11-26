@@ -18,6 +18,7 @@ module.exports.run = async (bot, game, message, args) => {
 
     const member = await game.guild.members.fetch(message.author.id);
     game.players.push({ id: message.author.id, member: member, name: member.displayName });
+    // Maybe here is where it's not adding game.spectators? 
     member.roles.add(settings.spectatorRole);
     message.channel.send(`<@${message.author.id}> began spectating the game!`);
 

@@ -16,7 +16,7 @@ const bot = new discord.Client({
 });
 const fs = require('fs');
 
-var game = include(`game.json`);
+var games = include(`game.json`);
 
 bot.commands = new discord.Collection();
 bot.configs = new discord.Collection();
@@ -42,10 +42,14 @@ function loadCommands() {
     console.log(`Loaded all commands.`);
 }
 
+
+// This could be an issue when doing games
+// perhaps pass in index #, or update all games in array? 
 function updateStatus() {
-    var numPlayersAlive = game.players.reduce(function (total, player) {
+    // Update this, definitely not good
+    var numPlayersAlive = games.forEach(game => game.players.reduce(function (total, player) {
         return total + (player.alive ? 1 : 0);
-    }, 0);
+    }, 0));
     var aliveString = " - " + numPlayersAlive + " player" + (numPlayersAlive !== 1 ? "s" : "") + " alive";
 
     if (settings.debug)
@@ -61,8 +65,10 @@ function updateStatus() {
 bot.on('ready', async () => {
     console.log(`${bot.user.username} is online on ${bot.guilds.cache.size} server(s).`);
     loadCommands();
-    game.guild = bot.guilds.cache.first();
-    game.commandChannel = game.guild.channels.cache.find(channel => channel.id === settings.commandChannel);
+    // Create game(s)
+    // Get function to create a game and do this.
+    game[0].guild = bot.guilds.cache.first();
+    game[0].commandChannel = game.guild.channels.cache.find(channel => channel.id === settings.commandChannel);
     updateStatus();
 
     // Run living players check periodically
