@@ -1,4 +1,6 @@
-﻿const settings = include('settings.json');
+﻿const { Client } = require("discord.js");
+
+const settings = include('settings.json');
 const saveLoader = include(`${settings.modulesDir}/saveLoader.js`);
 
 module.exports.config = {
@@ -12,11 +14,20 @@ module.exports.config = {
         + `${settings.commandPrefix}assign jamie liam rebecca tim mafia 2\n`
         + `${settings.commandPrefix}assign brighid cody lovers\n`
         + `${settings.commandPrefix}assign tim mayor`,
-    usableBy: "Moderator",
+    usableBy: "GameModerator",
     aliases: ["assign"],
     requiresGame: true
 };
-
+/**
+ *
+ *
+ * @param {Client} bot
+ * @param {*} game
+ * @param {*} message
+ * @param {*} command
+ * @param {*} args
+ * @return {*} 
+ */
 module.exports.run = async (bot, game, message, command, args) => {
     if (args.length === 0) {
         message.reply("You need to specify at least one player and a team or the Mayor or Lovers role. Usage:");
@@ -76,14 +87,16 @@ module.exports.run = async (bot, game, message, command, args) => {
         return;
     }
 
+    
+
     // Now assign all of the players to the given team.
     for (let i = 0; i < players.length; i++) {
         // Prevent double Mayor votes.
         if (players[i].team === "Mayor" && team === "Mayor") continue;
         players[i].team = team;
-        if (players[i].team === "Mafia 1") game.guild.channels.cache.get(settings.mafiaChannel1).permissionOverwrites.create(players[i].member, { VIEW_CHANNEL: true });
-        else if (players[i].team === "Mafia 2") game.guild.channels.cache.get(settings.mafiaChannel2).permissionOverwrites.create(players[i].member, { VIEW_CHANNEL: true });
-        else if (players[i].team === "Lovers") game.guild.channels.cache.get(settings.mafiaChannel3).permissionOverwrites.create(players[i].member, { VIEW_CHANNEL: true });
+        if (players[i].team === "Mafia 1") game.guild.channels.cache.get(game.mafiaChannel1Channel).permissionOverwrites.create(players[i].member, { VIEW_CHANNEL: true, SEND_MESSAGES: true });
+        else if (players[i].team === "Mafia 2") game.guild.channels.cache.get(game.mafiaChannel2Channel).permissionOverwrites.create(players[i].member, { VIEW_CHANNEL: true, SEND_MESSAGES: true });
+        else if (players[i].team === "Lovers") game.guild.channels.cache.get(game.mafiaChannel3Channel).permissionOverwrites.create(players[i].member, { VIEW_CHANNEL: true, SEND_MESSAGES: true });
         else if (players[i].team === "Mayor" && game.poll !== null && game.poll.open) {
             for (let j = 0; j < game.poll.entries.length; j++) {
                 let foundPlayerVote = false;

@@ -9,7 +9,7 @@ module.exports.config = {
     details: "Adds the specified member to the game as a player. Note that the member must have the Eligible to Play role in order to be added to the game.",
     usage: `${settings.commandPrefix}addplayer cody\n`
         + `${settings.commandPrefix}add tori`,
-    usableBy: "Moderator",
+    usableBy: "GameModerator",
     aliases: ["addplayer", "add"],
     requiresGame: true
 };
@@ -40,13 +40,13 @@ module.exports.run = async (bot, game, message, command, args) => {
     // Add the member to the players list and give them the player role.
     var player = new Player(member.id, member, member.displayName, true, "");
     game.players.push(player);
-    member.roles.add(settings.playerRole);
+    member.roles.add(game.PlayerRole);
     
 
     var channel;
     if (settings.debug) channel = game.guild.channels.cache.get(settings.testingChannel);
     else channel = game.guild.channels.cache.get(settings.generalChannel);
-    channel.send(`<@${member.id}> joined the game!`);
+    channel.send(`<@${member.id}> joined game ${game.gameNumber}!`);
 
     if (game.maxPlayers && game.maxPlayers == game.players.length) {
         clearTimeout(game.halfTimer);
@@ -56,7 +56,7 @@ module.exports.run = async (bot, game, message, command, args) => {
 
         game.canJoin = false;
 
-        const playerRole = game.guild.roles.cache.find(role => role.id === settings.playerRole);
+        const playerRole = game.guild.roles.cache.find(role => role.id === game.PlayerRole);
         channel.send(`${playerRole}, The current game is at full capacity and cannot accept anymore players! The game will begin once the moderator is ready. Please use the .spectate command to watch the game`);
 
         saveLoader.save(game);

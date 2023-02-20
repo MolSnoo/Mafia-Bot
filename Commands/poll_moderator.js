@@ -13,7 +13,7 @@ module.exports.config = {
     usage: `${settings.commandPrefix}poll "Who will be hanged?" Brighid, Chris, Caleb, Emily, James, Jamie, Kiki, Liam, Rebecca, Tori, Vivian\n`
         + `${settings.commandPrefix}poll "Who will receive punishment? (2 majority)" Chris, Cody, Liam\n`
         + `${settings.commandPrefix}poll "Who to hang? (5 majority)" living`,
-    usableBy: "Moderator",
+    usableBy: "GameModerator",
     aliases: ["poll"],
     requiresGame: true
 };
@@ -44,7 +44,7 @@ module.exports.run = async (bot, game, message, command, args) => {
 
     game.poll = new Poll(title, entries);
 
-    const channel = game.guild.channels.cache.get(settings.announcementChannel);
+    const channel = game.guild.channels.cache.get(game.announcementChannel);
     channel.send(game.poll.stringify()).then(message => {
         game.poll.message = message;
         // Save the game.

@@ -12,13 +12,13 @@ module.exports.config = {
         + `${settings.commandPrefix}delete 100\n`
         + `${settings.commandPrefix}delete @A.I. Capone 5\n`
         + `${settings.commandPrefix}delete @Vivian 75`,
-    usableBy: "Moderator",
+    usableBy: "GameModerator",
     aliases: ["delete"],
     requiresGame: false
 };
 
 module.exports.run = async (bot, game, message, command, args) => {
-    if (message.channel.parentId !== settings.gameCategory) return message.reply(`You do not have permission to use that command outside of the game category.`);
+    if (message.channel.parentId !== game.gameCategory) return message.reply(`You do not have permission to use that command outside of the game category.`);
     if (args.length === 0) {
         message.reply("You need to specify an amount of messages to delete. Usage:");
         message.channel.send(exports.config.usage);

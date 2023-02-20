@@ -2,20 +2,21 @@ const settings = include('settings.json');
 const discord = require('discord.js');
 
 module.exports.config = {
-    name: "help_moderator",
+    name: "help_gameModerator",
     description: "Lists all commands available to you.",
     details: "Lists all commands available to the user. If a command is specified, displays the help menu for that command.",
     usage: `${settings.commandPrefix}help\n` +
         `${settings.commandPrefix}help mute`,
-    usableBy: "Moderator",
+    usableBy: "GameModerator",
     aliases: ["help"],
     requiresGame: false
 };
 
 module.exports.run = async (bot, game, message, command, args) => {
+    var guild = bot.guilds.cache.first();
     // Get all commands available to the user and sort them alphabetically.
     var roleCommands = new discord.Collection();
-    roleCommands = bot.configs.filter(config => config.usableBy === "Moderator");
+    roleCommands = bot.configs.filter(config => config.usableBy === "GameModerator");
     roleCommands.sort(function (a, b) {
         if (a.name < b.name) return -1;
         if (a.name > b.name) return 1;
@@ -25,7 +26,7 @@ module.exports.run = async (bot, game, message, command, args) => {
     if (args.length === 0) {
         let embed = new discord.MessageEmbed()
             .setColor('1F8B4C')
-            .setAuthor({ name: `${game.guild.me.displayName} Help`, iconURL: bot.user.avatarURL() })
+            .setAuthor({ name: `${guild.me.displayName} Help`, iconURL: bot.user.avatarURL() })
             .setDescription(`These are the available commands for users with the Moderator role.`);
 
         roleCommands.forEach(function (value, key, map) {

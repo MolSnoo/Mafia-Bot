@@ -1,7 +1,7 @@
-﻿[
-  {
+﻿{
   "guild": null,
   "commandChannel": null,
+  "gameCategory": null,
   "inProgress": false,
   "canJoin": false,
   "halfTimer": null,
@@ -9,20 +9,17 @@
   "players": [],
   "spectators": [],
   "poll": null,
-  "roles": [
-    {
-      "name": "",
-      "color": "",
-      "id": ""
-    }
-  ],
-  "gameCategory": "668184016557703188",
-  "testingChannel": "268845550269497344",
-  "generalChannel": "636315613589143565",
-  "announcementChannel": "668198839949328442",
-  "mafiaChannel1": "668201100662407208",
-  "mafiaChannel2": "668201124548968460",
-  "mafiaChannel3": "668201149811392522",
+  "number": null,
+  "PlayerRole": null,
+  "ModeratorRole": null,
+  "DeadRole": null,
+  "SpectatorRole": null,
+  "gameCategory": null,
+  "testingChannel": null,
+  "generalChannel": null,
+  "announcementChannel": null,
+  "mafiaChannel1": null,
+  "mafiaChannel2": null,
+  "mafiaChannel3": null,
   "maxPlayers": null
 }
-]

@@ -11,12 +11,15 @@ const bot = new discord.Client({
     intents: [
         discord.Intents.FLAGS.GUILDS,
         discord.Intents.FLAGS.GUILD_MEMBERS,
-        discord.Intents.FLAGS.GUILD_MESSAGES
+        discord.Intents.FLAGS.GUILD_MESSAGES  
     ]
 });
-const fs = require('fs');
 
-var games = include(`game.json`);
+const fs = require('fs');
+const { loadGames } = require('./Modules/saveLoader');
+
+var game = include(`game.json`);
+var games = [];
 
 bot.commands = new discord.Collection();
 bot.configs = new discord.Collection();
@@ -42,38 +45,50 @@ function loadCommands() {
     console.log(`Loaded all commands.`);
 }
 
+async function updateStatus() {
+    const checkGames = await loadGames(bot.guilds.cache.first());
+    var gamesInProgress = 0;
 
-// This could be an issue when doing games
-// perhaps pass in index #, or update all games in array? 
-function updateStatus() {
-    // Update this, definitely not good
-    var numPlayersAlive = games.forEach(game => game.players.reduce(function (total, player) {
-        return total + (player.alive ? 1 : 0);
-    }, 0));
-    var aliveString = " - " + numPlayersAlive + " player" + (numPlayersAlive !== 1 ? "s" : "") + " alive";
+    for (var individual of checkGames)
+        if (individual.inProgress) gamesInProgress++;
+
+    var aliveString = " " + gamesInProgress + " game(s)";
 
     if (settings.debug)
         bot.user.setPresence({ status: "dnd", activities: [{ name: settings.debugModeActivity.string + aliveString, type: settings.debugModeActivity.type }] });
     else {
-        if (game.inProgress && !game.canJoin)
+        if (gamesInProgress != 0)
             bot.user.setPresence({ status: "online", activities: [{ name: settings.gameInProgressActivity.string + aliveString, type: settings.gameInProgressActivity.type, url: settings.gameInProgressActivity.url }] });
         else
             bot.user.setPresence({ status: "online", activities: [{ name: settings.onlineActivity.string, type: settings.onlineActivity.type }] });
     }
+
+    // Cache all members
+    bot.guilds.cache.first().members.fetch();
 }
 
 bot.on('ready', async () => {
+    await bot.guilds.fetch();
+    await bot.user.fetch()
+
     console.log(`${bot.user.username} is online on ${bot.guilds.cache.size} server(s).`);
     loadCommands();
-    // Create game(s)
+
+    games = fs.readFileSync(settings.prevGameFileName, 'utf-8');
+    games = JSON.parse(games);
+    
+
+
     // Get function to create a game and do this.
-    game[0].guild = bot.guilds.cache.first();
-    game[0].commandChannel = game.guild.channels.cache.find(channel => channel.id === settings.commandChannel);
-    updateStatus();
+    game.guild = bot.guilds.cache.first();
+    game.commandChannel = game.guild.channels.cache.find(channel => channel.id === settings.commandChannel);
+    games.push(game);
+    await updateStatus();
+
 
     // Run living players check periodically
-    setInterval(() => {
-        updateStatus();
+    setInterval(async () => {
+        await updateStatus();
     }, settings.refreshStatusInterval * 60000);
 });
 
@@ -86,7 +101,8 @@ bot.on('messageCreate', async message => {
     // If the command is run successfully, the message will be deleted.
     if (message.content.startsWith(settings.commandPrefix)) {
         const command = message.content.substring(settings.commandPrefix.length);
-        commandHandler.execute(command, bot, game, message);
+
+        commandHandler.execute(command, bot, await loadGames(bot.guilds.cache.first()), message);
     }
 });
 

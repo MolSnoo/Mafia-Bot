@@ -1,4 +1,6 @@
-﻿const settings = include('settings.json');
+﻿const { Client } = require("discord.js");
+
+const settings = include('settings.json');
 const saveLoader = include(`${settings.modulesDir}/saveLoader.js`);
 
 module.exports.config = {
@@ -8,11 +10,20 @@ module.exports.config = {
         + "Players with the Dead role have permission to see all game channels, so be sure the player is actually supposed to be dead before using this command.",
     usage: `${settings.commandPrefix}kill chris\n`
         + `${settings.commandPrefix}die micah joshua amber devyn veronica`,
-    usableBy: "Moderator",
+    usableBy: "GameModerator",
     aliases: ["kill", "die"],
     requiresGame: true
 };
-
+/**
+ *
+ *
+ * @param {Client} bot
+ * @param {*} game
+ * @param {*} message
+ * @param {*} command
+ * @param {*} args
+ * @return {*} 
+ */
 module.exports.run = async (bot, game, message, command, args) => {
     if (args.length === 0) {
         message.reply("You need to specify at least one player. Usage:");
@@ -20,27 +31,40 @@ module.exports.run = async (bot, game, message, command, args) => {
         return;
     }
 
+    var guild = bot.guilds.cache.first();
+
     // Get all listed players first.
     var players = [];
-    for (let i = 0; i < game.players.length; i++) {
-        for (let j = 0; j < args.length; j++) {
-            if (args[j].toLowerCase() === game.players[i].name.toLowerCase()) {
-                players.push(game.players[i]);
-                args.splice(j, 1);
-                break;
+
+    if (args[0].toLowerCase() !== 'living') {
+        for (let i = 0; i < game.players.length; i++) {
+            for (let j = 0; j < args.length; j++) {
+                if (args[j].toLowerCase() === game.players[i].name.toLowerCase()) {
+                    players.push(game.players[i]);
+                    args.splice(j, 1);
+                    break;
+                }
             }
         }
+        if (args.length > 0) {
+            const missingPlayers = args.join(", ");
+            return message.reply(`Couldn't find player(s): ${missingPlayers}.`);
+        }
     }
-    if (args.length > 0) {
-        const missingPlayers = args.join(", ");
-        return message.reply(`Couldn't find player(s): ${missingPlayers}.`);
+    else {
+        for (let i = 0; i < game.players.length; i++)
+            players.push(game.players[i]);
     }
 
     for (let i = 0; i < players.length; i++) {
         players[i].alive = false;
-        players[i].member.roles.remove(settings.playerRole).catch();
-        players[i].member.roles.add(settings.deadRole).catch();
-    }
+        players[i].member.roles.remove(game.PlayerRole).catch();
+        players[i].member.roles.add(game.DeadRole).catch();
+
+        guild.channels.cache.get(game.mafiaChannel1Channel).permissionOverwrites.create(players[i].id, { VIEW_CHANNEL: null });
+        guild.channels.cache.get(game.mafiaChannel2Channel).permissionOverwrites.create(players[i].id, { VIEW_CHANNEL: null });
+        guild.channels.cache.get(game.mafiaChannel3Channel).permissionOverwrites.create(players[i].id, { VIEW_CHANNEL: null });
+    }    
 
     // Save the game.
     saveLoader.save(game);
