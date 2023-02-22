@@ -6,7 +6,7 @@ module.exports.config = {
     details: "Lists all dead players.",
     usage: `${settings.commandPrefix}dead\n`
         + `${settings.commandPrefix}died`,
-    usableBy: "Moderator",
+    usableBy: "GameModerator",
     aliases: ["dead", "died"],
     requiresGame: true
 };

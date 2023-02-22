@@ -1,6 +1,7 @@
 ﻿{
   "guild": null,
   "commandChannel": null,
+  "gameCategory": null,
   "inProgress": false,
   "canJoin": false,
   "halfTimer": null,
@@ -8,5 +9,17 @@
   "players": [],
   "spectators": [],
   "poll": null,
+  "number": null,
+  "PlayerRole": null,
+  "ModeratorRole": null,
+  "DeadRole": null,
+  "SpectatorRole": null,
+  "gameCategory": null,
+  "testingChannel": null,
+  "generalChannel": null,
+  "announcementChannel": null,
+  "mafiaChannel1": null,
+  "mafiaChannel2": null,
+  "mafiaChannel3": null,
   "maxPlayers": null
 }

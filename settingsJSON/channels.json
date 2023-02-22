@@ -1,0 +1,44 @@
+[
+    {
+        "name": "command",
+        "seeBy": ["Moderator"],
+        "usableBy": ["Moderator"],
+        "type": "command"
+    },
+    {
+        "name": "announcement",
+        "seeBy": ["Moderator", "Player", "Dead", "Spectator"],
+        "usableBy": ["Moderator"],
+        "type": "announcement"
+    },
+    {
+        "name": "town-square",
+        "seeBy": ["Player", "Moderator", "Dead", "Spectator"],
+        "usableBy": ["Player", "Moderator"],
+        "type": "town-square"
+    },
+    {
+        "name": "mafiaChannel1",
+        "seeBy": ["Moderator", "Dead", "Spectator"],
+        "usableBy": ["Moderator"],
+        "type": "private"
+    },
+    {
+        "name": "mafiaChannel2",
+        "seeBy": ["Moderator", "Dead", "Spectator"],
+        "usableBy": ["Moderator"],
+        "type": "private"
+    },
+    {
+        "name": "mafiaChannel3",
+        "seeBy": ["Moderator", "Dead", "Spectator"],
+        "usableBy": ["Moderator"],
+        "type": "private"
+    },
+    {
+        "name": "dead-chat",
+        "seeBy": ["Moderator", "Dead", "Spectator"],
+        "usableBy": ["Moderator", "Dead", "Spectator"],
+        "type": "private"
+    }
+]

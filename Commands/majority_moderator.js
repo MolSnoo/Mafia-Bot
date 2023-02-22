@@ -10,7 +10,7 @@ module.exports.config = {
     usage: `${settings.commandPrefix}majority\n`
         + `${settings.commandPrefix}majority 20\n`
         + `${settings.commandPrefix}majority lost`,
-    usableBy: "Moderator",
+    usableBy: "GameModerator",
     aliases: ["majority"],
     requiresGame: true
 };
@@ -19,7 +19,7 @@ module.exports.run = async (bot, game, message, command, args) => {
     if (!game.poll) return message.reply("There is no poll for majority to apply to.");
     if (!game.poll.open) return message.reply("The current poll is already closed.");
 
-    const channel = game.guild.channels.cache.get(settings.announcementChannel);
+    const channel = game.guild.channels.cache.get(game.announcementChannel);
 
     if (args[0] === "lost" || args[0] === "Lost") {
         clearTimeout(game.poll.timer);

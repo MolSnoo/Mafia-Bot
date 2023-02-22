@@ -1,12 +1,13 @@
 ﻿{
   "commandPrefix": ".",
-  "debug": true,
+  "debug": false,
 
   "commandsDir": "Commands",
   "dataDir": "Data",
   "modulesDir": "Modules",
 
   "savedDataFileName": "currentGame.json",
+  "prevGameFileName": "prevGamesInfo.json",
   "refreshStatusInterval": 1,
   "defaultMajorityTime": 30,
 
@@ -27,11 +28,12 @@
   "eligibleRole": "703345451838996591",
   "playerRole": "668194175518244871",
   "moderatorRole": "668193752145330200",
-  "deadRole": "668194606201962527",
+  "DeadRole": "668194606201962527",
   "spectatorRole": "668195203768647715",
+  "keeperRole": "1029140450117955775",
 
   "gameCategory": "668184016557703188",
-  "testingChannel": "668195715800891411",
+  "testingChannel": "268845550269497344",
   "generalChannel": "636315613589143565",
   "commandChannel": "668198773322678272",
   "announcementChannel": "668198839949328442",

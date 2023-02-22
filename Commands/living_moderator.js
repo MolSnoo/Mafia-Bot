@@ -6,7 +6,7 @@ module.exports.config = {
     details: "Lists all living players.",
     usage: `${settings.commandPrefix}living\n`
         + `${settings.commandPrefix}alive`,
-    usableBy: "Moderator",
+    usableBy: "GameModerator",
     aliases: ["living", "alive"],
     requiresGame: true
 };

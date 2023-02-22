@@ -1,4 +1,4 @@
-﻿const settings = include('settings.json');
+const settings = include('settings.json');
 const discord = require('discord.js');
 
 module.exports.config = {

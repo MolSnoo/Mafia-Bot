@@ -12,7 +12,7 @@ module.exports.config = {
         + `${settings.commandPrefix}unassign jamie liam rebecca tim mafia 2\n`
         + `${settings.commandPrefix}unassign brighid cody lovers\n`
         + `${settings.commandPrefix}unassign tim mayor`,
-    usableBy: "Moderator",
+    usableBy: "GameModerator",
     aliases: ["unassign"],
     requiresGame: true
 };
@@ -23,6 +23,8 @@ module.exports.run = async (bot, game, message, command, args) => {
         message.channel.send(exports.config.usage);
         return;
     }
+
+    var guild = bot.guilds.cache.first();
 
     // Get all listed players first.
     var players = [];
@@ -78,9 +80,10 @@ module.exports.run = async (bot, game, message, command, args) => {
 
     // Now assign all of the players to the given team.
     for (let i = 0; i < players.length; i++) {
-        if (team === "Mafia 1") game.guild.channels.cache.get(settings.mafiaChannel1).permissionOverwrites.create(players[i].member, { VIEW_CHANNEL: null });
-        else if (team === "Mafia 2") game.guild.channels.cache.get(settings.mafiaChannel2).permissionOverwrites.create(players[i].member, { VIEW_CHANNEL: null });
-        else if (team === "Lovers") game.guild.channels.cache.get(settings.mafiaChannel3).permissionOverwrites.create(players[i].member, { VIEW_CHANNEL: null });
+        var user = await guild.members.fetch(players[i].id);
+        if (team === "Mafia 1") guild.channels.cache.get(game.mafiaChannel1Channel).permissionOverwrites.create(user, { VIEW_CHANNEL: null });
+        else if (team === "Mafia 2") guild.channels.cache.get(game.mafiaChannel2Channel).permissionOverwrites.create(user, { VIEW_CHANNEL: null });
+        else if (team === "Lovers") guild.channels.cache.get(game.mafiaChannel3Channel).permissionOverwrites.create(user, { VIEW_CHANNEL: null });
         else if (players[i].team === "Mayor" && game.poll !== null && game.poll.open) {
             for (let j = 0; j < game.poll.entries.length; j++) {
                 let foundPlayerVote = false;
