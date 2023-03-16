@@ -35,9 +35,12 @@ module.exports.createGame = async function(bot, author) {
     
     // edit roles
     for (const role of roles) {
+        const keeperRolePriority = (await guild.roles.fetch(settings.roleUnder)).position;
         var editdRole = await guild.roles.create({
             name: role.name + ' ' + gameNumber,
-            color: role.color
+            color: role.color,
+            hoist: true,
+            position: keeperRolePriority
         });
 
         if (role.name.includes("Moderator")) {
@@ -45,7 +48,6 @@ module.exports.createGame = async function(bot, author) {
             member.roles.add(editdRole.id)
         }
         game[role.name + 'Role'] = editdRole.id;
-
     };
 
     for (const channel of channels) {
