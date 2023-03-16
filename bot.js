@@ -51,8 +51,14 @@ async function updateStatus() {
 
     for (var individual of checkGames)
         if (individual.inProgress) gamesInProgress++;
-
     var aliveString = " " + gamesInProgress + " game(s)";
+
+    if (checkGames.filter(x => x.inProgress).length === 1) {
+        var numPlayersAlive = checkGames[0].players.reduce(function (total, player) {
+            return total + (player.alive ? 1 : 0);
+        }, 0);
+        aliveString = " - " + numPlayersAlive + " player" + (numPlayersAlive !== 1 ? "s" : "") + " alive";
+    }
 
     if (settings.debug)
         bot.user.setPresence({ status: "dnd", activities: [{ name: settings.debugModeActivity.string + aliveString, type: settings.debugModeActivity.type }] });
