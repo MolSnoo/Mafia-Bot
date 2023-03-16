@@ -111,7 +111,7 @@ const loadAGame = async function (game) {
                 else if (player.team === "Lovers") game.guild.channels.cache.get(game.mafiaChannel3Channel).permissionOverwrites.create(player.member, { VIEW_CHANNEL: true, SEND_MESSAGES: true });
             }
             for (let i = 0; i < game.spectators.length; i++)
-                game.spectators[i].member.roles.add(settings.spectatorRole).catch();
+                game.spectators[i].member.roles.add(game.SpectatorRole).catch();
 
             // Remake poll.
             if (gameJson.poll !== null) {

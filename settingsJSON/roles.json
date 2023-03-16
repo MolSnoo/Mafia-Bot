@@ -4,15 +4,15 @@
         "color": "YELLOW"
     },
     {
-        "name": "Moderator",
-        "color": "PURPLE"
-    },
-    {
         "name": "Dead",
         "color": "GREY"
     },
     {
         "name": "Spectator",
         "color": "GREY"
+    },
+    {
+        "name": "Moderator",
+        "color": "PURPLE"
     }
 ]
