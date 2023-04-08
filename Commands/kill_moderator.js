@@ -61,9 +61,9 @@ module.exports.run = async (bot, game, message, command, args) => {
         players[i].member.roles.remove(game.PlayerRole).catch();
         players[i].member.roles.add(game.DeadRole).catch();
 
-        guild.channels.cache.get(game.mafiaChannel1Channel).permissionOverwrites.create(players[i].id, { VIEW_CHANNEL: null });
-        guild.channels.cache.get(game.mafiaChannel2Channel).permissionOverwrites.create(players[i].id, { VIEW_CHANNEL: null });
-        guild.channels.cache.get(game.mafiaChannel3Channel).permissionOverwrites.create(players[i].id, { VIEW_CHANNEL: null });
+        guild.channels.cache.get(game.mafiaChannel1Channel).permissionOverwrites.create(players[i].id, { VIEW_CHANNEL: null, SEND_MESSAGES: null });
+        guild.channels.cache.get(game.mafiaChannel2Channel).permissionOverwrites.create(players[i].id, { VIEW_CHANNEL: null, SEND_MESSAGES: null });
+        guild.channels.cache.get(game.mafiaChannel3Channel).permissionOverwrites.create(players[i].id, { VIEW_CHANNEL: null, SEND_MESSAGES: null });
     }    
 
     // Save the game.

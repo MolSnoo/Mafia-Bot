@@ -33,6 +33,7 @@ module.exports.save = function (game) {
         }
         var poll = new Poll(game.poll.title, entries);
         poll.timer = null;
+        poll.endTime = game.poll.endTime;
         poll.open = game.poll.open;
         poll.message = game.poll.message !== null ? game.poll.message.id : null;
         data.poll = poll;
@@ -106,9 +107,9 @@ const loadAGame = async function (game) {
                         player.member.roles.add(game.guild.roles.cache.find(role => role.id === game.DeadRole)).catch();
                 }
 
-                if (player.team === "Mafia 1") game.guild.channels.cache.get(game.mafiaChannel1Channel).permissionOverwrites.create(player.member, { VIEW_CHANNEL: true, SEND_MESSAGES: true });
-                else if (player.team === "Mafia 2") game.guild.channels.cache.get(game.mafiaChannel2Channel).permissionOverwrites.create(player.member, { VIEW_CHANNEL: true, SEND_MESSAGES: true });
-                else if (player.team === "Lovers") game.guild.channels.cache.get(game.mafiaChannel3Channel).permissionOverwrites.create(player.member, { VIEW_CHANNEL: true, SEND_MESSAGES: true });
+                if (player.team === "Mafia 1" && player.alive) game.guild.channels.cache.get(game.mafiaChannel1Channel).permissionOverwrites.create(player.member, { VIEW_CHANNEL: true, SEND_MESSAGES: true });
+                else if (player.team === "Mafia 2" && player.alive) game.guild.channels.cache.get(game.mafiaChannel2Channel).permissionOverwrites.create(player.member, { VIEW_CHANNEL: true, SEND_MESSAGES: true });
+                else if (player.team === "Lovers" && player.alive) game.guild.channels.cache.get(game.mafiaChannel3Channel).permissionOverwrites.create(player.member, { VIEW_CHANNEL: true, SEND_MESSAGES: true });
             }
             for (let i = 0; i < game.spectators.length; i++)
                 game.spectators[i].member.roles.add(game.SpectatorRole).catch();
@@ -129,6 +130,7 @@ const loadAGame = async function (game) {
                 }
                 var poll = new Poll(gameJson.poll.title, entries);
                 poll.timer = null;
+                poll.endTime = gameJson.poll.endTime;
                 poll.open = gameJson.poll.open;
                 if (gameJson.poll.message !== null)
                     game.guild.channels.cache.get(game.announcementChannel).messages.fetch(gameJson.poll.message).then(message => game.poll.message = message).catch(console.error);
