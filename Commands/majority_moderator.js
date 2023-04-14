@@ -1,4 +1,6 @@
-﻿const settings = include('settings.json');
+﻿const { loadGames } = require("../Modules/saveLoader");
+
+const settings = include('settings.json');
 const saveLoader = include(`${settings.modulesDir}/saveLoader.js`);
 
 module.exports.config = {
@@ -40,9 +42,15 @@ module.exports.run = async (bot, game, message, command, args) => {
     channel.send(`Majority has been reached! The poll will close at ${endTime}.`);
 
     // Set the poll timer.
-    game.poll.timer = setTimeout(function () {
-        game.poll.open = false;
-        game.poll.timer = null;
+    game.endTime = endTime;
+    const guild = game.guild;
+    saveLoader.save(game);
+    game.poll.timer = setTimeout(async function () {
+        var loadedGame = (await loadGames(guild)).find(x => x.commandChannel === game.commandChannel);
+        if (loadedGame.endTime !== game.endTime)
+            return;
+        loadedGame.poll.open = false;
+        loadedGame.poll.timer = null;
         channel.send("The poll is closed!");
         // Save the game.
         saveLoader.save(game);
