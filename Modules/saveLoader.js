@@ -36,6 +36,7 @@ module.exports.save = function (game) {
         poll.endTime = game.poll.endTime;
         poll.open = game.poll.open;
         poll.message = game.poll.message !== null ? game.poll.message.id : null;
+        poll.hasMajority = game.poll.hasMajority;
         data.poll = poll;
     }
 
@@ -132,6 +133,7 @@ const loadAGame = async function (game) {
                 poll.timer = null;
                 poll.endTime = gameJson.poll.endTime;
                 poll.open = gameJson.poll.open;
+                poll.hasMajority = gameJson.poll.hasMajority;
                 if (gameJson.poll.message !== null)
                     game.guild.channels.cache.get(game.announcementChannel).messages.fetch(gameJson.poll.message).then(message => game.poll.message = message).catch(console.error);
                 else game.poll.message = null;

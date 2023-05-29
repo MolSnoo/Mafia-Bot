@@ -20,16 +20,20 @@ module.exports.config = {
 module.exports.run = async (bot, game, message, command, args) => {
     if (!game.poll) return message.reply("There is no poll for majority to apply to.");
     if (!game.poll.open) return message.reply("The current poll is already closed.");
+    const guild = game.guild;
+
 
     const channel = game.guild.channels.cache.get(game.announcementChannel);
 
     if (args[0] === "lost" || args[0] === "Lost") {
-        clearTimeout(game.poll.timer);
-        game.poll.timer = null;
-        channel.send("Majority has been lost!");
-        // Save the game.
-        saveLoader.save(game);
-        return;
+        var loadedGame = (await loadGames(guild)).find(x => x.commandChannel === game.commandChannel);
+        if (loadedGame.poll.hasMajority) {
+            channel.send("Majority has been lost!");
+            loadedGame.poll.hasMajority = false;
+            // Save the game.
+            saveLoader.save(loadedGame);
+            return;
+        }
     }
     if (game.poll.timer !== null) return message.reply(`There is already majority on the current poll. Use \`${settings.commandPrefix}majority lost\` to cancel it first.`);
 
@@ -43,17 +47,20 @@ module.exports.run = async (bot, game, message, command, args) => {
 
     // Set the poll timer.
     game.endTime = endTime;
-    const guild = game.guild;
+    game.poll.hasMajority = true;
     saveLoader.save(game);
     game.poll.timer = setTimeout(async function () {
         var loadedGame = (await loadGames(guild)).find(x => x.commandChannel === game.commandChannel);
-        if (loadedGame.endTime !== game.endTime)
+        // If the game timer was a previous one, or if the majority was lost, end the timer
+        if (!loadedGame.poll.hasMajority || loadedGame.endTime !== game.endTime)
             return;
+
         loadedGame.poll.open = false;
         loadedGame.poll.timer = null;
+        loadedGame.poll.hasMajority = false;
         channel.send("The poll is closed!");
         // Save the game.
-        saveLoader.save(game);
+        saveLoader.save(loadedGame);
     }, time);
     
     return;
