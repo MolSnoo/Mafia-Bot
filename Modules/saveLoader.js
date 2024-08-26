@@ -1,4 +1,4 @@
-﻿const settings = include('settings.json');
+const settings = include('settings.json');
 const fs = require('fs');
 
 const Player = include(`${settings.dataDir}/Player.js`);
@@ -24,7 +24,7 @@ module.exports.save = function (game) {
             const entry = game.poll.entries[i];
             var votes = [];
             for (let j = 0; j < entry.votes.length; j++)
-                votes.push(entry.votes[j].id);
+                votes.push(entry?.votes[j]?.id);
             var newEntry = new PollEntry(entry.label);
             newEntry.votes = votes;
             newEntry.voteCount = entry.voteCount;
